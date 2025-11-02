@@ -1,0 +1,26 @@
+{
+  "name": "trade-creation-service",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.8.0",
+    "helmet": "^6.0.0",
+    "joi": "^17.9.2",
+    "mongoose": "^7.5.0",
+    "morgan": "^1.10.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,157 @@
+# =========================
+# MongoDB Service + Deployment (No Autoscaling)
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  type: ClusterIP
+  selector:
+    app: mongo-app
+  ports:
+    - port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-app
+  template:
+    metadata:
+      labels:
+        app: mongo-app
+    spec:
+      containers:
+        - name: mongo-container
+          image: mongo:7
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+# =========================
+# Trade Creation Service
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: trade-creation-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: trade-creation-app
+  ports:
+    - port: 4000
+      targetPort: 4000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trade-creation-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trade-creation-app
+  template:
+    metadata:
+      labels:
+        app: trade-creation-app
+    spec:
+      containers:
+        - name: trade-creation-container
+          image: trade_creation_service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongo-service:27017/tradingdb"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: trade-creation-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: trade-creation-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+# =========================
+# Trade View Service
+# =========================
+apiVersion: v1
+kind: Service
+metadata:
+  name: trade-view-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: trade-view-app
+  ports:
+    - port: 5000
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trade-view-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trade-view-app
+  template:
+    metadata:
+      labels:
+        app: trade-view-app
+    spec:
+      containers:
+        - name: trade-view-container
+          image: trade_view_service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongo-service:27017/tradingdb"
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: trade-view-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: trade-view-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60

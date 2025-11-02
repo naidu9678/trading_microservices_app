@@ -1,0 +1,24 @@
+# Node modules (we install inside the container)
+node_modules
+
+# Logs
+npm-debug.log
+logs
+*.log
+
+# Environment files (avoid leaking secrets)
+.env
+.env.local
+.env.*.local
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore
+
+# Optional: IDE/editor files
+.vscode
+.idea
