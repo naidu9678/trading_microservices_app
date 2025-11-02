@@ -40,23 +40,23 @@ Test the Trade View Service in your browser:
 http://localhost:5000/api/trades
 
 Step 4: Deploy Services on Kubernetes (Minikube)
-Open PowerShell (not CMD) and start Minikube:
-minikube start
-Configure the Docker environment for Minikube:
-minikube -p minikube docker-env | Invoke-Expression
-Load the Docker images into Minikube:
-minikube image load mongo:7
-minikube image load trade_creation_service:latest
-minikube image load trade_view_service:latest
-Apply the Persistent Volume and Deployment configurations:
-kubectl apply -f pvc.yml
-kubectl apply -f kube-deployment.yml
-Launch the Kubernetes Dashboard:
-minikube dashboard
-In a new CMD prompt, start the Minikube tunnel:
-minikube tunnel
-Access the Kubernetes Dashboard at:
-http://127.0.0.1:56268/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
+1. Open PowerShell (not CMD) and start Minikube:
+ minikube start
+2. Configure the Docker environment for Minikube:
+  minikube -p minikube docker-env | Invoke-Expression
+3. Load the Docker images into Minikube:
+  minikube image load mongo:7
+  minikube image load trade_creation_service:latest
+  minikube image load trade_view_service:latest
+4. Apply the Persistent Volume and Deployment configurations:
+   kubectl apply -f pvc.yml
+   kubectl apply -f kube-deployment.yml
+5. Launch the Kubernetes Dashboard:
+   minikube dashboard
+6. In a new CMD prompt, start the Minikube tunnel:
+   minikube tunnel
+7. Access the Kubernetes Dashboard at:
+   http://127.0.0.1:56268/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
 
 
 
