@@ -20,7 +20,7 @@ Before starting, ensure that the following are installed on your local machine:
 git clone https://github.com/naidu9678/trading_microservices_app.git
 cd trading_microservices_app
 
-Step 2: Build and Run Trade Creation Service
+### **Step 2: Build and Run Trade Creation Service**
 cd trade_creation_service
 docker build -t trade_creation_service .
 docker network create trading-net
@@ -30,7 +30,7 @@ docker run -d --name cnr-trade_creation_service --network trading-net -p 4000:40
 To test the Trade Creation Service, open a new CMD prompt and run:
 curl -X POST http://localhost:4000/api/trades -H "Content-Type: application/json" -d "{\"symbol\":\"AAPL\",\"type\":\"BUY\",\"quantity\":100,\"price\":180,\"trader\":\"Alice\"}"
 
-Step 3: Build and Run Trade View Service
+### **Step 3: Build and Run Trade View Service**
 
 cd ../trade_view_service
 docker build -t trade_view_service .
@@ -39,7 +39,7 @@ docker run -d --name cnr-trade_view_service --network trading-net -p 5000:5000 -
 Test the Trade View Service in your browser:
 http://localhost:5000/api/trades
 
-Step 4: Deploy Services on Kubernetes (Minikube)
+### **Step 4: Deploy Services on Kubernetes (Minikube)**
 1. Open PowerShell (not CMD) and start Minikube:
  minikube start
 2. Configure the Docker environment for Minikube:
