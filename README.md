@@ -57,6 +57,15 @@ Step 4: Deploy Services on Kubernetes (Minikube)
    minikube tunnel
 7. Access the Kubernetes Dashboard at:
    http://127.0.0.1:56268/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
+8. Testing App :
+   To test the Trade Creation Service, open a new CMD prompt and run:
+curl -X POST http://localhost:4000/api/trades -H "Content-Type: application/json" -d "{\"symbol\":\"AAPL\",\"type\":\"BUY\",\"quantity\":100,\"price\":180,\"trader\":\"Alice\"}"
+
+  view the trades:
+ 
+   http://localhost:5000/api/trades
+
+ 
 
 
 
